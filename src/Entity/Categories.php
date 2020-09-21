@@ -11,6 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass=CategoriesRepository::class)
  * @ORM\Table(name="tab_categories")
  * @UniqueEntity(fields={"name"}, message="There is already category with this name")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Categories
 {
