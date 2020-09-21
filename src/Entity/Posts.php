@@ -74,9 +74,24 @@ class Posts
      */
     private $medias;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Tags::class, cascade={"persist"})
+     * @ORM\JoinTable(name="tab_posts_tags")
+     * @ORM\OrderBy({"name": "ASC"})
+     * @var ArrayCollection|Tags[]
+     */
+    private $tags;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Categories::class, inversedBy="posts")
+     * @var Categories|null
+     */
+    private ?Categories $category = null;
+
     public function __construct()
     {
         $this->medias = new ArrayCollection();
+        $this->tags = new ArrayCollection();
     }
 
     /**
@@ -247,6 +262,44 @@ class Posts
                 $media->setPost(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Tags[]
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function addTag(Tags $tag): self
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags[] = $tag;
+        }
+
+        return $this;
+    }
+
+    public function removeTag(Tags $tag): self
+    {
+        if ($this->tags->contains($tag)) {
+            $this->tags->removeElement($tag);
+        }
+
+        return $this;
+    }
+
+    public function getCategory(): ?Categories
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Categories $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }
