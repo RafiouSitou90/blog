@@ -8,11 +8,13 @@ use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=PostMediasRepository::class)
  * @ORM\Table(name="tab_post_medias")
  * @ORM\HasLifecycleCallbacks()
+ * @Vich\Uploadable()
  */
 class PostMedias
 {
@@ -27,6 +29,8 @@ class PostMedias
     private string $id;
 
     /**
+     * NOTE: This is not a mapped field of entity metadata, just a simple property.
+     * @Vich\UploadableField(mapping="post_medias", fileNameProperty="mediaName", size="mediaSize")
      * @var File|UploadedFile|null
      */
     private ?File $mediaFile = null;
