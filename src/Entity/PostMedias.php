@@ -48,6 +48,12 @@ class PostMedias
     private ?int $mediaSize = null;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Posts::class, inversedBy="medias")
+     * @var Posts|null
+     */
+    private ?Posts $post = null;
+
+    /**
      * @return string|null
      */
     public function getId(): ?string
@@ -111,6 +117,18 @@ class PostMedias
     public function setMediaSize(int $mediaSize): self
     {
         $this->mediaSize = $mediaSize;
+
+        return $this;
+    }
+
+    public function getPost(): ?Posts
+    {
+        return $this->post;
+    }
+
+    public function setPost(?Posts $post): self
+    {
+        $this->post = $post;
 
         return $this;
     }
