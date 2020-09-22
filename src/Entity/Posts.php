@@ -96,12 +96,19 @@ class Posts
     private Users $author;
 
     /**
+     * @ORM\OneToMany(targetEntity=Ratings::class, mappedBy="post", orphanRemoval=true)
+     * @var ArrayCollection|Ratings[]
+     */
+    private $ratings;
+
+    /**
      * Posts constructor.
      */
     public function __construct()
     {
         $this->medias = new ArrayCollection();
         $this->tags = new ArrayCollection();
+        $this->ratings = new ArrayCollection();
     }
 
     /**
@@ -352,6 +359,37 @@ class Posts
     public function setAuthor(Users $author): self
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Ratings[]
+     */
+    public function getRatings(): Collection
+    {
+        return $this->ratings;
+    }
+
+    public function addRating(Ratings $rating): self
+    {
+        if (!$this->ratings->contains($rating)) {
+            $this->ratings[] = $rating;
+            $rating->setPost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRating(Ratings $rating): self
+    {
+        if ($this->ratings->contains($rating)) {
+            $this->ratings->removeElement($rating);
+            // set the owning side to null (unless already changed)
+            if ($rating->getPost() === $this) {
+                $rating->setPost(null);
+            }
+        }
 
         return $this;
     }

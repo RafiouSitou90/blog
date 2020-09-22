@@ -77,9 +77,16 @@ class Users implements UserInterface
      */
     private ?UsersProfiles $profile = null;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Ratings::class, mappedBy="author", orphanRemoval=true)
+     * @var ArrayCollection|Ratings[]
+     */
+    private $ratings;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
+        $this->ratings = new ArrayCollection();
     }
 
     /**
@@ -274,6 +281,37 @@ class Users implements UserInterface
     public function setProfile(?UsersProfiles $profile): self
     {
         $this->profile = $profile;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Ratings[]
+     */
+    public function getRatings(): Collection
+    {
+        return $this->ratings;
+    }
+
+    public function addRating(Ratings $rating): self
+    {
+        if (!$this->ratings->contains($rating)) {
+            $this->ratings[] = $rating;
+            $rating->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRating(Ratings $rating): self
+    {
+        if ($this->ratings->contains($rating)) {
+            $this->ratings->removeElement($rating);
+            // set the owning side to null (unless already changed)
+            if ($rating->getAuthor() === $this) {
+                $rating->setAuthor(null);
+            }
+        }
 
         return $this;
     }
