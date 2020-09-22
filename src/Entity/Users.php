@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UsersRepository::class)
@@ -31,6 +32,15 @@ class Users implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank(message="The username should not be blank")
+     * @Assert\NotNull(message="The username should not be null.")
+     * @Assert\Length(
+     *      min = 8,
+     *      max = 180,
+     *      minMessage = "The username must be at least {{ limit }} characters long.",
+     *      maxMessage = "The username cannot be longer than {{ limit }} characters.",
+     *      allowEmptyString = false
+     * )
      * @var string
      */
     private string $username;
@@ -49,18 +59,41 @@ class Users implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\NotBlank(message="The email should not be blank.")
+     * @Assert\NotNull(message="The email should not be null.")
+     * @Assert\Email(
+     *     message = "The email '{{ value }}' is not a valid email."
+     * )
      * @var string
      */
     private string $email;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank(message="The firstName should not be blank")
+     * @Assert\NotNull(message="The firstName should not be null.")
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 100,
+     *      minMessage = "Your firstName must be at least {{ limit }} characters long.",
+     *      maxMessage = "Your firstName cannot be longer than {{ limit }} characters.",
+     *      allowEmptyString = false
+     * )
      * @var string
      */
     private string $firstName;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=150)
+     * @Assert\NotBlank(message="The lastName should not be blank")
+     * @Assert\NotNull(message="The lastName should not be null.")
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 150,
+     *      minMessage = "Your lastName must be at least {{ limit }} characters long.",
+     *      maxMessage = "Your lastName cannot be longer than {{ limit }} characters.",
+     *      allowEmptyString = false
+     * )
      * @var string
      */
     private string $lastName;
@@ -89,6 +122,9 @@ class Users implements UserInterface
      */
     private $comments;
 
+    /**
+     * Users constructor.
+     */
     public function __construct()
     {
         $this->posts = new ArrayCollection();
@@ -97,9 +133,9 @@ class Users implements UserInterface
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getId(): ?string
+    public function getId(): string
     {
         return $this->id;
     }
@@ -185,9 +221,9 @@ class Users implements UserInterface
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -204,9 +240,9 @@ class Users implements UserInterface
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getFirstName(): ?string
+    public function getFirstName(): string
     {
         return $this->firstName;
     }
@@ -223,9 +259,9 @@ class Users implements UserInterface
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getLastName(): ?string
+    public function getLastName(): string
     {
         return $this->lastName;
     }
@@ -257,6 +293,10 @@ class Users implements UserInterface
         return $this->posts;
     }
 
+    /**
+     * @param Posts $post
+     * @return $this
+     */
     public function addPost(Posts $post): self
     {
         if (!$this->posts->contains($post)) {
@@ -267,6 +307,10 @@ class Users implements UserInterface
         return $this;
     }
 
+    /**
+     * @param Posts $post
+     * @return $this
+     */
     public function removePost(Posts $post): self
     {
         if ($this->posts->contains($post)) {
@@ -280,11 +324,18 @@ class Users implements UserInterface
         return $this;
     }
 
+    /**
+     * @return UsersProfiles|null
+     */
     public function getProfile(): ?UsersProfiles
     {
         return $this->profile;
     }
 
+    /**
+     * @param UsersProfiles|null $profile
+     * @return $this
+     */
     public function setProfile(?UsersProfiles $profile): self
     {
         $this->profile = $profile;
@@ -300,6 +351,10 @@ class Users implements UserInterface
         return $this->ratings;
     }
 
+    /**
+     * @param Ratings $rating
+     * @return $this
+     */
     public function addRating(Ratings $rating): self
     {
         if (!$this->ratings->contains($rating)) {
@@ -310,6 +365,10 @@ class Users implements UserInterface
         return $this;
     }
 
+    /**
+     * @param Ratings $rating
+     * @return $this
+     */
     public function removeRating(Ratings $rating): self
     {
         if ($this->ratings->contains($rating)) {
@@ -331,6 +390,10 @@ class Users implements UserInterface
         return $this->comments;
     }
 
+    /**
+     * @param PostsComments $comment
+     * @return $this
+     */
     public function addComment(PostsComments $comment): self
     {
         if (!$this->comments->contains($comment)) {
@@ -341,6 +404,10 @@ class Users implements UserInterface
         return $this;
     }
 
+    /**
+     * @param PostsComments $comment
+     * @return $this
+     */
     public function removeComment(PostsComments $comment): self
     {
         if ($this->comments->contains($comment)) {

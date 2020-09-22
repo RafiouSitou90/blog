@@ -7,6 +7,7 @@ use App\Repository\PostsCommentsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=PostsCommentsRepository::class)
@@ -41,12 +42,19 @@ class PostsComments
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank(message="The content should not be blank")
+     * @Assert\NotNull(message="The content should not be null.")
+     * @Assert\Length(
+     *      min = 10,
+     *      minMessage = "The content must be at least {{ limit }} characters long.",
+     *      allowEmptyString = false
+     * )
      * @var string
      */
     private string $content;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=25)
      * @var string
      */
     private string $state;
@@ -72,9 +80,9 @@ class PostsComments
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getId(): ?string
+    public function getId(): string
     {
         return $this->id;
     }
