@@ -1,0 +1,19 @@
+vich_uploader:
+    db_driver: orm
+
+    mappings:
+        post_medias:
+            uri_prefix: '%app.path.post_medias%'
+            upload_destination: '%kernel.project_dir%/public%app.path.post_medias%'
+            namer: Vich\UploaderBundle\Naming\UniqidNamer
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true
+
+        users_profiles:
+            uri_prefix: '%app.path.users_profiles%'
+            upload_destination: '%kernel.project_dir%/public%app.path.users_profiles%'
+            namer: Vich\UploaderBundle\Naming\UniqidNamer
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true
