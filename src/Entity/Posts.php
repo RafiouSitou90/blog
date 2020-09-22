@@ -102,6 +102,12 @@ class Posts
     private $ratings;
 
     /**
+     * @ORM\OneToMany(targetEntity=PostsComments::class, mappedBy="post", orphanRemoval=true)
+     * @var ArrayCollection|PostsComments[]
+     */
+    private $comments;
+
+    /**
      * Posts constructor.
      */
     public function __construct()
@@ -109,6 +115,7 @@ class Posts
         $this->medias = new ArrayCollection();
         $this->tags = new ArrayCollection();
         $this->ratings = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     /**
@@ -388,6 +395,37 @@ class Posts
             // set the owning side to null (unless already changed)
             if ($rating->getPost() === $this) {
                 $rating->setPost(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|PostsComments[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(PostsComments $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setPost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(PostsComments $comment): self
+    {
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
+            // set the owning side to null (unless already changed)
+            if ($comment->getPost() === $this) {
+                $comment->setPost(null);
             }
         }
 
