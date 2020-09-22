@@ -77,9 +77,23 @@ class Users implements UserInterface
      */
     private ?UsersProfiles $profile = null;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Ratings::class, mappedBy="author", orphanRemoval=true)
+     * @var ArrayCollection|Ratings[]
+     */
+    private $ratings;
+
+    /**
+     * @ORM\OneToMany(targetEntity=PostsComments::class, mappedBy="author", orphanRemoval=true)
+     * @var ArrayCollection|PostsComments[]
+     */
+    private $comments;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
+        $this->ratings = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     /**
@@ -274,6 +288,68 @@ class Users implements UserInterface
     public function setProfile(?UsersProfiles $profile): self
     {
         $this->profile = $profile;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Ratings[]
+     */
+    public function getRatings(): Collection
+    {
+        return $this->ratings;
+    }
+
+    public function addRating(Ratings $rating): self
+    {
+        if (!$this->ratings->contains($rating)) {
+            $this->ratings[] = $rating;
+            $rating->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRating(Ratings $rating): self
+    {
+        if ($this->ratings->contains($rating)) {
+            $this->ratings->removeElement($rating);
+            // set the owning side to null (unless already changed)
+            if ($rating->getAuthor() === $this) {
+                $rating->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|PostsComments[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(PostsComments $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(PostsComments $comment): self
+    {
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
+            // set the owning side to null (unless already changed)
+            if ($comment->getAuthor() === $this) {
+                $comment->setAuthor(null);
+            }
+        }
 
         return $this;
     }
