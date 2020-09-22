@@ -88,6 +88,16 @@ class Posts
      */
     private ?Categories $category = null;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="posts")
+     * @ORM\JoinColumn(nullable=false)
+     * @var Users
+     */
+    private Users $author;
+
+    /**
+     * Posts constructor.
+     */
     public function __construct()
     {
         $this->medias = new ArrayCollection();
@@ -243,6 +253,10 @@ class Posts
         return $this->medias;
     }
 
+    /**
+     * @param PostMedias $media
+     * @return $this
+     */
     public function addMedia(PostMedias $media): self
     {
         if (!$this->medias->contains($media)) {
@@ -253,6 +267,10 @@ class Posts
         return $this;
     }
 
+    /**
+     * @param PostMedias $media
+     * @return $this
+     */
     public function removeMedia(PostMedias $media): self
     {
         if ($this->medias->contains($media)) {
@@ -274,6 +292,10 @@ class Posts
         return $this->tags;
     }
 
+    /**
+     * @param Tags $tag
+     * @return $this
+     */
     public function addTag(Tags $tag): self
     {
         if (!$this->tags->contains($tag)) {
@@ -283,6 +305,10 @@ class Posts
         return $this;
     }
 
+    /**
+     * @param Tags $tag
+     * @return $this
+     */
     public function removeTag(Tags $tag): self
     {
         if ($this->tags->contains($tag)) {
@@ -292,14 +318,40 @@ class Posts
         return $this;
     }
 
+    /**
+     * @return Categories|null
+     */
     public function getCategory(): ?Categories
     {
         return $this->category;
     }
 
+    /**
+     * @param Categories|null $category
+     * @return $this
+     */
     public function setCategory(?Categories $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * @return Users
+     */
+    public function getAuthor(): Users
+    {
+        return $this->author;
+    }
+
+    /**
+     * @param Users $author
+     * @return $this
+     */
+    public function setAuthor(Users $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }
