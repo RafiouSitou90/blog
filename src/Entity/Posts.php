@@ -74,9 +74,34 @@ class Posts
      */
     private $medias;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Tags::class, cascade={"persist"})
+     * @ORM\JoinTable(name="tab_posts_tags")
+     * @ORM\OrderBy({"name": "ASC"})
+     * @var ArrayCollection|Tags[]
+     */
+    private $tags;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Categories::class, inversedBy="posts")
+     * @var Categories|null
+     */
+    private ?Categories $category = null;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="posts")
+     * @ORM\JoinColumn(nullable=false)
+     * @var Users
+     */
+    private Users $author;
+
+    /**
+     * Posts constructor.
+     */
     public function __construct()
     {
         $this->medias = new ArrayCollection();
+        $this->tags = new ArrayCollection();
     }
 
     /**
@@ -228,6 +253,10 @@ class Posts
         return $this->medias;
     }
 
+    /**
+     * @param PostMedias $media
+     * @return $this
+     */
     public function addMedia(PostMedias $media): self
     {
         if (!$this->medias->contains($media)) {
@@ -238,6 +267,10 @@ class Posts
         return $this;
     }
 
+    /**
+     * @param PostMedias $media
+     * @return $this
+     */
     public function removeMedia(PostMedias $media): self
     {
         if ($this->medias->contains($media)) {
@@ -247,6 +280,78 @@ class Posts
                 $media->setPost(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Tags[]
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    /**
+     * @param Tags $tag
+     * @return $this
+     */
+    public function addTag(Tags $tag): self
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags[] = $tag;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Tags $tag
+     * @return $this
+     */
+    public function removeTag(Tags $tag): self
+    {
+        if ($this->tags->contains($tag)) {
+            $this->tags->removeElement($tag);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Categories|null
+     */
+    public function getCategory(): ?Categories
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param Categories|null $category
+     * @return $this
+     */
+    public function setCategory(?Categories $category): self
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * @return Users
+     */
+    public function getAuthor(): Users
+    {
+        return $this->author;
+    }
+
+    /**
+     * @param Users $author
+     * @return $this
+     */
+    public function setAuthor(Users $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }

@@ -5,6 +5,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     app.path.post_medias: /uploads/images/posts/medias
+    app.path.users_profiles: /uploads/images/users/profiles
 
 services:
     # default configuration for services in *this* file
