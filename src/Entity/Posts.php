@@ -8,10 +8,13 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=PostsRepository::class)
  * @ORM\Table(name="tab_posts")
+ * @UniqueEntity(fields={"slug"}, message="There is already post with this slug")
  * @ORM\HasLifecycleCallbacks()
  */
 class Posts
@@ -27,7 +30,16 @@ class Posts
     private string $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=200)
+     * @Assert\NotBlank(message="The title should not be blank")
+     * @Assert\NotNull(message="The title should not be null.")
+     * @Assert\Length(
+     *      min = 8,
+     *      max = 255,
+     *      minMessage = "The title must be at least {{ limit }} characters long.",
+     *      maxMessage = "The title cannot be longer than {{ limit }} characters.",
+     *      allowEmptyString = false
+     * )
      * @var string
      */
     private string $title;
@@ -40,24 +52,40 @@ class Posts
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="The summary should not be blank")
+     * @Assert\NotNull(message="The summary should not be null.")
+     * @Assert\Length(
+     *      min = 8,
+     *      max = 255,
+     *      minMessage = "The summary must be at least {{ limit }} characters long.",
+     *      maxMessage = "The summary cannot be longer than {{ limit }} characters.",
+     *      allowEmptyString = false
+     * )
      * @var string
      */
     private string $summary;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank(message="The content should not be blank")
+     * @Assert\NotNull(message="The content should not be null.")
+     * @Assert\Length(
+     *      min = 10,
+     *      minMessage = "The content must be at least {{ limit }} characters long.",
+     *      allowEmptyString = false
+     * )
      * @var string
      */
     private string $content;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=25)
      * @var string
      */
     private string $state;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=25)
      * @var string
      */
     private string $commentState;
@@ -119,17 +147,17 @@ class Posts
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getId(): ?string
+    public function getId(): string
     {
         return $this->id;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -146,9 +174,9 @@ class Posts
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getSlug(): ?string
+    public function getSlug(): string
     {
         return $this->slug;
     }
@@ -165,9 +193,9 @@ class Posts
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getSummary(): ?string
+    public function getSummary(): string
     {
         return $this->summary;
     }
@@ -184,9 +212,9 @@ class Posts
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getContent(): ?string
+    public function getContent(): string
     {
         return $this->content;
     }
@@ -203,9 +231,9 @@ class Posts
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getState(): ?string
+    public function getState(): string
     {
         return $this->state;
     }
@@ -222,9 +250,9 @@ class Posts
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getCommentState(): ?string
+    public function getCommentState(): string
     {
         return $this->commentState;
     }
@@ -378,6 +406,10 @@ class Posts
         return $this->ratings;
     }
 
+    /**
+     * @param Ratings $rating
+     * @return $this
+     */
     public function addRating(Ratings $rating): self
     {
         if (!$this->ratings->contains($rating)) {
@@ -388,6 +420,10 @@ class Posts
         return $this;
     }
 
+    /**
+     * @param Ratings $rating
+     * @return $this
+     */
     public function removeRating(Ratings $rating): self
     {
         if ($this->ratings->contains($rating)) {
@@ -409,6 +445,10 @@ class Posts
         return $this->comments;
     }
 
+    /**
+     * @param PostsComments $comment
+     * @return $this
+     */
     public function addComment(PostsComments $comment): self
     {
         if (!$this->comments->contains($comment)) {
@@ -419,6 +459,10 @@ class Posts
         return $this;
     }
 
+    /**
+     * @param PostsComments $comment
+     * @return $this
+     */
     public function removeComment(PostsComments $comment): self
     {
         if ($this->comments->contains($comment)) {
