@@ -44,9 +44,9 @@ class Ratings
     private int $rating;
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getId(): ?string
+    public function getId(): string
     {
         return $this->id;
     }
@@ -90,9 +90,9 @@ class Ratings
     }
 
     /**
-     * @return int|null
+     * @return int
      */
-    public function getRating(): ?int
+    public function getRating(): int
     {
         return $this->rating;
     }

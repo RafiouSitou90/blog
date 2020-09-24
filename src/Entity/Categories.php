@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CategoriesRepository::class)
@@ -28,7 +29,16 @@ class Categories
     private string $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=200)
+     * @Assert\NotBlank(message="The name should not be blank")
+     * @Assert\NotNull(message="The name should not be null.")
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 200,
+     *      minMessage = "The name must be at least {{ limit }} characters long.",
+     *      maxMessage = "The name cannot be longer than {{ limit }} characters.",
+     *      allowEmptyString = false
+     * )
      * @var string
      */
     private string $name;
@@ -45,23 +55,26 @@ class Categories
      */
     private $posts;
 
+    /**
+     * Categories constructor.
+     */
     public function __construct()
     {
         $this->posts = new ArrayCollection();
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getId(): ?string
+    public function getId(): string
     {
         return $this->id;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -78,9 +91,9 @@ class Categories
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getSlug(): ?string
+    public function getSlug(): string
     {
         return $this->slug;
     }
@@ -104,6 +117,10 @@ class Categories
         return $this->posts;
     }
 
+    /**
+     * @param Posts $post
+     * @return $this
+     */
     public function addPost(Posts $post): self
     {
         if (!$this->posts->contains($post)) {
@@ -114,6 +131,10 @@ class Categories
         return $this;
     }
 
+    /**
+     * @param Posts $post
+     * @return $this
+     */
     public function removePost(Posts $post): self
     {
         if ($this->posts->contains($post)) {
