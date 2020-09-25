@@ -48,7 +48,7 @@ class Categories
      * @ORM\Column(type="string", length=255)
      * @var string
      */
-    private string $slug;
+    private string $slug = '';
 
     /**
      * @ORM\OneToMany(targetEntity=Posts::class, mappedBy="category")
@@ -100,17 +100,6 @@ class Categories
     }
 
     /**
-     * @param string $slug
-     * @return $this
-     */
-    public function setSlug(string $slug): self
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Posts[]
      */
     public function getPosts(): Collection
@@ -156,7 +145,7 @@ class Categories
     public function computeSlug(SluggerInterface $slugger): void
     {
         if (!$this->slug || '-' === $this->slug) {
-            $this->slug = (string) $slugger->slug((string) $this)->lower();
+            $this->slug = (string) $slugger->slug((string) $this->getName())->lower();
         }
     }
 }

@@ -23,6 +23,28 @@ class Posts
     use Timestampable;
 
     /**
+     * @var string
+     */
+    private const DRAFT = 'drafted';
+    /**
+     * @var string
+     */
+    private const PUBLISHED = 'published';
+    /**
+     * @var string
+     */
+    private const ARCHIVED = 'archived';
+
+    /**
+     * @var string
+     */
+    private const COMMENT_CLOSED = 'closed';
+    /**
+     * @var string
+     */
+    private const COMMENT_OPENED = 'opened';
+
+    /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid")
@@ -49,7 +71,7 @@ class Posts
      * @ORM\Column(type="string", length=255)
      * @var string
      */
-    private string $slug;
+    private string $slug = '';
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -183,17 +205,6 @@ class Posts
     }
 
     /**
-     * @param string $slug
-     * @return $this
-     */
-    public function setSlug(string $slug): self
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getSummary(): string
@@ -278,10 +289,10 @@ class Posts
     }
 
     /**
-     * @param DateTimeInterface $publishedAt
+     * @param DateTimeInterface|null $publishedAt
      * @return $this
      */
-    public function setPublishedAt(DateTimeInterface $publishedAt): self
+    public function setPublishedAt(?DateTimeInterface $publishedAt): self
     {
         $this->publishedAt = $publishedAt;
 
@@ -484,7 +495,49 @@ class Posts
     public function computeSlug(SluggerInterface $slugger): void
     {
         if (!$this->slug || '-' === $this->slug) {
-            $this->slug = (string) $slugger->slug((string) $this)->lower();
+            $this->slug = (string) $slugger->slug(
+                (string) $this->getTitle() . '/' . $this->getCategory()->getName()
+            )->lower();
         }
+    }
+
+    /**
+     * @return string
+     */
+    public static function getDraft(): string
+    {
+        return self::DRAFT;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getPublished(): string
+    {
+        return self::PUBLISHED;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getArchived(): string
+    {
+        return self::ARCHIVED;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getCommentOpened(): string
+    {
+        return self::COMMENT_OPENED;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getCommentClosed(): string
+    {
+        return self::COMMENT_CLOSED;
     }
 }
