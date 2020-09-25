@@ -1,0 +1,9 @@
+App\Entity\Categories:
+    category:
+        name: First category
+
+    category_1:
+        name: Second category
+
+    category_2:
+        name: Third category
