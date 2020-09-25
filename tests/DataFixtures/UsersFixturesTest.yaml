@@ -1,0 +1,23 @@
+App\Entity\Users:
+    user:
+        username: username
+        email: email\@domain.com
+        password: user_password
+        first_name: User first name
+        last_name: User last name
+
+    admin:
+        username: admin_username
+        email: admin_email\@domain.com
+        password: admin_user_password
+        first_name: Admin User first name
+        last_name: Admin User last name
+        roles: ['ROLE_ADMIN']
+
+    superadmin:
+        username: superadmin_username
+        email: superadmin_email\@domain.com
+        password: superadmin_user_password
+        first_name: Super Admin User first name
+        last_name: Super Admin User last name
+        roles: ['ROLE_SUPER_ADMIN']

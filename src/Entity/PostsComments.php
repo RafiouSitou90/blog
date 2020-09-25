@@ -29,16 +29,16 @@ class PostsComments
     /**
      * @ORM\ManyToOne(targetEntity=Posts::class, inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
-     * @var Posts
+     * @var Posts|null
      */
-    private Posts $post;
+    private ?Posts $post;
 
     /**
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
-     * @var Users
+     * @var Users|null
      */
-    private Users $author;
+    private ?Users $author;
 
     /**
      * @ORM\Column(type="text")
@@ -99,7 +99,7 @@ class PostsComments
      * @param Posts $post
      * @return $this
      */
-    public function setPost(Posts $post): self
+    public function setPost(?Posts $post): self
     {
         $this->post = $post;
 

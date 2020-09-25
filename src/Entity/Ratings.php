@@ -26,9 +26,9 @@ class Ratings
     /**
      * @ORM\ManyToOne(targetEntity=Posts::class, inversedBy="ratings")
      * @ORM\JoinColumn(nullable=false)
-     * @var Posts
+     * @var Posts|null
      */
-    private Posts $post;
+    private ?Posts $post;
 
     /**
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="ratings")
@@ -60,10 +60,10 @@ class Ratings
     }
 
     /**
-     * @param Posts $post
+     * @param Posts|null $post
      * @return $this
      */
-    public function setPost(Posts $post): self
+    public function setPost(?Posts $post): self
     {
         $this->post = $post;
 
