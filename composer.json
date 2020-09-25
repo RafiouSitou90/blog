@@ -2,7 +2,7 @@
     "type": "project",
     "license": "proprietary",
     "require": {
-        "php": ">=7.2.5",
+        "php": ">=7.4.6",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "composer/package-versions-deprecated": "^1.11",
@@ -41,7 +41,9 @@
         "vich/uploader-bundle": "^1.15"
     },
     "require-dev": {
+        "friendsofphp/php-cs-fixer": "2.16.4",
         "phpstan/phpstan": "^0.12.43",
+        "squizlabs/php_codesniffer": "3.5.6",
         "symfony/browser-kit": "^5.1",
         "symfony/css-selector": "^5.1",
         "symfony/debug-bundle": "^5.1",
