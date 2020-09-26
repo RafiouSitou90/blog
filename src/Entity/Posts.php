@@ -495,9 +495,15 @@ class Posts
     public function computeSlug(SluggerInterface $slugger): void
     {
         if (!$this->slug || '-' === $this->slug) {
-            $this->slug = (string) $slugger->slug(
-                (string) $this->getTitle() . '/' . $this->getCategory()->getName()
-            )->lower();
+            if ($this->getCategory() !== null) {
+                $this->slug = (string) $slugger->slug(
+                    (string) $this->getTitle() . '/' . $this->getCategory()->getName()
+                )->lower();
+            } else {
+                $this->slug = (string) $slugger->slug(
+                    (string) $this->getTitle()
+                )->lower();
+            }
         }
     }
 

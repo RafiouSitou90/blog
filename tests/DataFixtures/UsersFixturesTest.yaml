@@ -6,6 +6,15 @@ App\Entity\Users:
         first_name: User first name
         last_name: User last name
 
+
+    user_{1..10}:
+        username: username_<current()>
+        email: email_<current()>\@domain.com
+        password: user_<current()>_password
+        first_name: User_<current()> first name
+        last_name: User_<current()> last name
+
+
     admin:
         username: admin_username
         email: admin_email\@domain.com
@@ -13,6 +22,7 @@ App\Entity\Users:
         first_name: Admin User first name
         last_name: Admin User last name
         roles: ['ROLE_ADMIN']
+
 
     superadmin:
         username: superadmin_username
