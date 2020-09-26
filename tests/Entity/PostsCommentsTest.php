@@ -103,6 +103,7 @@ class PostsCommentsTest extends KernelTestCase
         $comment = $this->getEntity();
 
         $commentResponse = ($this->getEntity())->setContent("New comment's response for the post");
+        $this->assertNotNull($comment->getId());
         $this->assertInstanceOf(PostsComments::class, $comment->addReply($commentResponse));
         $this->assertEquals(1, $comment->getReplies()->count());
         $this->assertNotNull($comment->getReplies()[0]);

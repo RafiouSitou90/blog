@@ -85,6 +85,7 @@ class RatingsTest extends KernelTestCase
         $rating = $this->getEntity();
 
         $this->assertHasErrors($rating);
+        $this->assertNotNull($rating->getId());
         $this->assertInstanceOf(Users::class, $rating->getAuthor());
         $this->assertInstanceOf(Posts::class, $rating->getPost());
         $this->assertInstanceOf(DateTime::class, $rating->getCreatedAt());

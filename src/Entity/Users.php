@@ -204,6 +204,8 @@ class Users implements UserInterface
     }
 
     /**
+     * @codeCoverageIgnore
+     *
      * @see UserInterface
      * @return string|null
      */
@@ -214,6 +216,8 @@ class Users implements UserInterface
     }
 
     /**
+     * @codeCoverageIgnore
+     *
      * @see UserInterface
      * @return void
      */

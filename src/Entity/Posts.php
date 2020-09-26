@@ -135,6 +135,7 @@ class Posts
 
     /**
      * @ORM\ManyToOne(targetEntity=Categories::class, inversedBy="posts")
+     * @ORM\JoinColumn(nullable=true)
      * @var Categories|null
      */
     private ?Categories $category = null;

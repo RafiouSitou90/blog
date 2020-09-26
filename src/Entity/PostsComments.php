@@ -247,11 +247,11 @@ class PostsComments
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->id;
-    }
+//    /**
+//     * @return string
+//     */
+//    public function __toString(): string
+//    {
+//        return $this->id;
+//    }
 }

@@ -25,3 +25,8 @@ schema:
 schema-test:
 	$(sc) doctrine:schema:update --force --env=test
 .PHONY: schema-test
+
+## Run all tests coverage
+coverage-test:
+	php bin/phpunit --coverage-html web-coverage-test/test-coverage
+.PHONY: coverage-test
