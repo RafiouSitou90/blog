@@ -122,10 +122,10 @@ class PostsComments
     }
 
     /**
-     * @param Users $author
+     * @param Users|null $author
      * @return $this
      */
-    public function setAuthor(Users $author): self
+    public function setAuthor(?Users $author): self
     {
         $this->author = $author;
 

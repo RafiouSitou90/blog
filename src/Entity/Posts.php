@@ -142,9 +142,9 @@ class Posts
     /**
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="posts")
      * @ORM\JoinColumn(nullable=false)
-     * @var Users
+     * @var Users|null
      */
-    private Users $author;
+    private ?Users $author;
 
     /**
      * @ORM\OneToMany(targetEntity=Ratings::class, mappedBy="post", orphanRemoval=true)
@@ -392,18 +392,18 @@ class Posts
     }
 
     /**
-     * @return Users
+     * @return Users|null
      */
-    public function getAuthor(): Users
+    public function getAuthor(): ?Users
     {
         return $this->author;
     }
 
     /**
-     * @param Users $author
+     * @param Users|null $author
      * @return $this
      */
-    public function setAuthor(Users $author): self
+    public function setAuthor(?Users $author): self
     {
         $this->author = $author;
 
