@@ -70,10 +70,10 @@ class PostMedias
     }
 
     /**
-     * @param File $mediaFile
+     * @param File|null $mediaFile
      * @return $this
      */
-    public function setMediaFile(File $mediaFile): self
+    public function setMediaFile(?File $mediaFile): self
     {
         $this->mediaFile = $mediaFile;
         if (null !== $mediaFile) {
