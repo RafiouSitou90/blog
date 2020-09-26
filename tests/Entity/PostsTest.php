@@ -231,6 +231,37 @@ class PostsTest extends KernelTestCase
     /**
      * @return void
      */
+    public function testEntityWithDuplicateSlug(): void
+    {
+        $data = $this->loadFixtureFiles([
+            dirname(__DIR__). '/DataFixtures/PostsFixturesTest.yaml'
+        ]);
+
+        /** @var Categories $category */
+        $category = $data['post_category'];
+
+        /** @var Users $user */
+        $user = $data['post_user'];
+
+        $newPost = (new Posts())
+            ->setTitle('Title of the test post')
+            ->setSummary('Summary of the test post')
+            ->setContent('Content of the test post')
+            ->setCategory($category)
+            ->setAuthor($user)
+            ->setState(Posts::getDraft())
+            ->setCommentState(Posts::getCommentOpened())
+            ->setPublishedAt(null)
+        ;
+
+        $this->entityManager->persist($newPost);
+
+        $this->assertHasErrors($newPost, 1);
+    }
+
+    /**
+     * @return void
+     */
     public function tearDown(): void
     {
         parent::tearDown();
