@@ -123,4 +123,12 @@ class PostsCommentsTest extends KernelTestCase
         $this->assertHasErrors($comment->setContent('comment'), 1);
         $this->assertHasErrors($comment->setContent(''), 2);
     }
+
+    /**
+     * @return void
+     */
+    public function tearDown(): void
+    {
+        parent::tearDown();
+    }
 }

@@ -90,4 +90,12 @@ class RatingsTest extends KernelTestCase
         $this->assertInstanceOf(DateTime::class, $rating->getCreatedAt());
         $this->assertEquals(1, $rating->getRating());
     }
+
+    /**
+     * @return void
+     */
+    public function tearDown(): void
+    {
+        parent::tearDown();
+    }
 }
