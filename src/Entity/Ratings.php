@@ -52,9 +52,9 @@ class Ratings
     }
 
     /**
-     * @return Posts
+     * @return Posts|null
      */
-    public function getPost(): Posts
+    public function getPost(): ?Posts
     {
         return $this->post;
     }
