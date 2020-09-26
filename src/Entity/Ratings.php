@@ -33,9 +33,9 @@ class Ratings
     /**
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="ratings")
      * @ORM\JoinColumn(nullable=false)
-     * @var Users
+     * @var Users|null
      */
-    private Users $author;
+    private ?Users $author;
 
     /**
      * @ORM\Column(type="smallint")
@@ -52,9 +52,9 @@ class Ratings
     }
 
     /**
-     * @return Posts
+     * @return Posts|null
      */
-    public function getPost(): Posts
+    public function getPost(): ?Posts
     {
         return $this->post;
     }
@@ -71,18 +71,18 @@ class Ratings
     }
 
     /**
-     * @return Users
+     * @return Users|null
      */
-    public function getAuthor(): Users
+    public function getAuthor(): ?Users
     {
         return $this->author;
     }
 
     /**
-     * @param Users $author
+     * @param Users|null $author
      * @return $this
      */
-    public function setAuthor(Users $author): self
+    public function setAuthor(?Users $author): self
     {
         $this->author = $author;
 

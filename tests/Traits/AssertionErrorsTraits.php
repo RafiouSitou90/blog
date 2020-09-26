@@ -27,6 +27,7 @@ trait AssertionErrorsTraits
         foreach ($errors as $error) {
             $messages[] = $error->getPropertyPath(). ' => '. $error->getMessage();
         }
+
         $this->assertCount($nbError, $errors, implode(', ', $messages));
     }
 }

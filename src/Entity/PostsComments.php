@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Traits\Timestampable;
 use App\Repository\PostsCommentsRepository;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -60,7 +61,7 @@ class PostsComments
     private string $state;
 
     /**
-     * @ORM\ManyToOne(targetEntity=PostsComments::class, inversedBy="replies")
+     * @ORM\ManyToOne(targetEntity=PostsComments::class, inversedBy="replies", cascade={"persist", "remove"})
      * @var PostsComments|null
      */
     private ?PostsComments $parentComment = null;
@@ -70,6 +71,12 @@ class PostsComments
      * @var ArrayCollection|PostsComments[]
      */
     private $replies;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     * @var DateTimeInterface|null
+     */
+    private ?DateTimeInterface $publishedAt = null;
 
     /**
      * PostsComments constructor.
@@ -88,9 +95,9 @@ class PostsComments
     }
 
     /**
-     * @return Posts
+     * @return Posts|null
      */
-    public function getPost(): Posts
+    public function getPost(): ?Posts
     {
         return $this->post;
     }
@@ -107,18 +114,18 @@ class PostsComments
     }
 
     /**
-     * @return Users
+     * @return Users|null
      */
-    public function getAuthor(): Users
+    public function getAuthor(): ?Users
     {
         return $this->author;
     }
 
     /**
-     * @param Users $author
+     * @param Users|null $author
      * @return $this
      */
-    public function setAuthor(Users $author): self
+    public function setAuthor(?Users $author): self
     {
         $this->author = $author;
 
@@ -164,7 +171,7 @@ class PostsComments
     }
 
     /**
-     * @return $this|null
+     * @return $this|PostsComments|null
      */
     public function getParentComment(): ?self
     {
@@ -220,4 +227,31 @@ class PostsComments
 
         return $this;
     }
+
+    /**
+     * @return DateTimeInterface|null
+     */
+    public function getPublishedAt(): ?DateTimeInterface
+    {
+        return $this->publishedAt;
+    }
+
+    /**
+     * @param DateTimeInterface|null $publishedAt
+     * @return $this
+     */
+    public function setPublishedAt(?DateTimeInterface $publishedAt): self
+    {
+        $this->publishedAt = $publishedAt;
+
+        return $this;
+    }
+
+//    /**
+//     * @return string
+//     */
+//    public function __toString(): string
+//    {
+//        return $this->id;
+//    }
 }

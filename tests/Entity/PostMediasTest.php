@@ -86,4 +86,12 @@ class PostMediasTest extends KernelTestCase
         $this->assertNotNull($postMedia->getId());
         $this->assertInstanceOf(Posts::class, $postMedia->getPost());
     }
+
+    /**
+     * @return void
+     */
+    public function tearDown(): void
+    {
+        parent::tearDown();
+    }
 }

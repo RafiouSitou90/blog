@@ -135,6 +135,7 @@ class Posts
 
     /**
      * @ORM\ManyToOne(targetEntity=Categories::class, inversedBy="posts")
+     * @ORM\JoinColumn(nullable=true)
      * @var Categories|null
      */
     private ?Categories $category = null;
@@ -142,9 +143,9 @@ class Posts
     /**
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="posts")
      * @ORM\JoinColumn(nullable=false)
-     * @var Users
+     * @var Users|null
      */
-    private Users $author;
+    private ?Users $author;
 
     /**
      * @ORM\OneToMany(targetEntity=Ratings::class, mappedBy="post", orphanRemoval=true)
@@ -392,18 +393,18 @@ class Posts
     }
 
     /**
-     * @return Users
+     * @return Users|null
      */
-    public function getAuthor(): Users
+    public function getAuthor(): ?Users
     {
         return $this->author;
     }
 
     /**
-     * @param Users $author
+     * @param Users|null $author
      * @return $this
      */
-    public function setAuthor(Users $author): self
+    public function setAuthor(?Users $author): self
     {
         $this->author = $author;
 
@@ -495,9 +496,15 @@ class Posts
     public function computeSlug(SluggerInterface $slugger): void
     {
         if (!$this->slug || '-' === $this->slug) {
-            $this->slug = (string) $slugger->slug(
-                (string) $this->getTitle() . '/' . $this->getCategory()->getName()
-            )->lower();
+            if ($this->getCategory() !== null) {
+                $this->slug = (string) $slugger->slug(
+                    (string) $this->getTitle() . '/' . $this->getCategory()->getName()
+                )->lower();
+            } else {
+                $this->slug = (string) $slugger->slug(
+                    (string) $this->getTitle()
+                )->lower();
+            }
         }
     }
 
