@@ -1,0 +1,31 @@
+App\Entity\Users:
+    post_user:
+        username: post_user
+        email: post_user\@domain.com
+        password: post_user_password
+        first_name: User first name
+        last_name: User last name
+
+
+App\Entity\Categories:
+    post_category:
+        name: Test new post category
+
+
+App\Entity\Posts:
+    post:
+        title: Title of the test post
+        summary: Summary of the test post
+        content: Content of the test post
+        category: '@post_category'
+        author: '@post_user'
+        state: submitted
+        comment_state: opened
+        published_at: <datetime()>
+
+
+App\Entity\PostMedias:
+    post_media_{1..5}:
+        media_name: file<current()>.jpg
+        media_size: <numberBetween(10, 1000)>
+        post: '@post'
