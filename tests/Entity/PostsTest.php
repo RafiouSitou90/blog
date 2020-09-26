@@ -143,6 +143,7 @@ class PostsTest extends KernelTestCase
 
         $this->assertEquals(Posts::getDraft(), $post->getState());
         $this->assertEquals(Posts::getPublished(), $post->setState(Posts::getPublished())->getState());
+        $this->assertEquals(Posts::getArchived(), $post->setState(Posts::getArchived())->getState());
         $this->assertNotNull($post->getPublishedAt());
         $this->assertInstanceOf(DateTime::class, $post->getPublishedAt());
     }
@@ -257,6 +258,34 @@ class PostsTest extends KernelTestCase
         $this->entityManager->persist($newPost);
 
         $this->assertHasErrors($newPost, 1);
+    }
+
+    /**
+     * @return void
+     */
+    public function testEntityWithNullCategorySlug(): void
+    {
+        $data = $this->loadFixtureFiles([
+            dirname(__DIR__). '/DataFixtures/PostsFixturesTest.yaml'
+        ]);
+
+        /** @var Users $user */
+        $user = $data['post_user'];
+
+        $newOtherPost = (new Posts())
+            ->setTitle('Title of the other test post')
+            ->setSummary('Summary of the other test post')
+            ->setContent('Content of the other test post')
+            ->setCategory(null)
+            ->setAuthor($user)
+            ->setState(Posts::getDraft())
+            ->setCommentState(Posts::getCommentOpened())
+            ->setPublishedAt(null)
+        ;
+
+        $this->entityManager->persist($newOtherPost);
+        $this->assertHasErrors($newOtherPost);
+        $this->assertEquals('title-of-the-other-test-post', $newOtherPost->getSlug());
     }
 
     /**

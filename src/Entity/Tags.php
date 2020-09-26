@@ -70,6 +70,7 @@ class Tags
     }
 
     /**
+     * @codeCoverageIgnore
      * @return string
      */
     public function __toString()
