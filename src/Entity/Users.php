@@ -123,6 +123,12 @@ class Users implements UserInterface
     private $comments;
 
     /**
+     * @ORM\Column(type="boolean")
+     * @var bool
+     */
+    private bool $isVerified = false;
+
+    /**
      * Users constructor.
      */
     public function __construct()
@@ -424,6 +430,25 @@ class Users implements UserInterface
                 $comment->setAuthor(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    /**
+     * @param bool $isVerified
+     * @return $this
+     */
+    public function setIsVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
 
         return $this;
     }
