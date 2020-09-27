@@ -4,10 +4,12 @@ namespace App\Repository;
 
 use App\Entity\Users;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use function get_class;
 
 /**
  * @method Users|null find($id, $lockMode = null, $lockVersion = null)
@@ -28,7 +30,7 @@ class UsersRepository extends ServiceEntityRepository implements PasswordUpgrade
     public function upgradePassword(UserInterface $user, string $newEncodedPassword): void
     {
         if (!$user instanceof Users) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
+            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
         }
 
         $user->setPassword($newEncodedPassword);
@@ -64,4 +66,20 @@ class UsersRepository extends ServiceEntityRepository implements PasswordUpgrade
         ;
     }
     */
+
+    /**
+     * @param string $username_or_email
+     * @return Users|null
+     * @throws NonUniqueResultException|NonUniqueResultException
+     */
+    public function findUserByUsernameOrEmail(string $username_or_email): ?Users
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.username = :param_username OR u.email = :param_email')
+            ->setParameter('param_username', $username_or_email)
+            ->setParameter('param_email', $username_or_email)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }
