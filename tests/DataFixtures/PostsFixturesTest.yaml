@@ -24,6 +24,22 @@ App\Entity\Posts:
         published_at: <datetime()>
 
 
+App\Entity\PostsComments:
+    posts_comments_{1..10}:
+        content: The post comment content
+        post: '@post'
+        author: '@post_user'
+        state: published
+        published_at: <datetime()>
+
+
+App\Entity\Ratings:
+    rating_{1..10}:
+        rating: 1
+        post: '@post'
+        author: '@post_user'
+
+
 App\Entity\PostMedias:
     post_media_{1..5}:
         media_name: file<current()>.jpg

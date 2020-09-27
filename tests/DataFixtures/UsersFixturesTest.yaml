@@ -1,3 +1,9 @@
+App\Entity\UsersProfiles:
+    user_profile_{1..13}:
+        avatar_name: file<current()>.jpg
+        avatar_size: <numberBetween(10, 1000)>
+
+
 App\Entity\Users:
     user:
         username: username
@@ -5,6 +11,7 @@ App\Entity\Users:
         password: user_password
         first_name: User first name
         last_name: User last name
+#        profile: '@user_profile_11'
 
 
     user_{1..10}:
@@ -13,6 +20,7 @@ App\Entity\Users:
         password: user_<current()>_password
         first_name: User_<current()> first name
         last_name: User_<current()> last name
+#        profile: '@user_profile_'<current()>
 
 
     admin:
@@ -22,6 +30,7 @@ App\Entity\Users:
         first_name: Admin User first name
         last_name: Admin User last name
         roles: ['ROLE_ADMIN']
+#        profile: '@user_profile_12'
 
 
     superadmin:
@@ -31,3 +40,4 @@ App\Entity\Users:
         first_name: Super Admin User first name
         last_name: Super Admin User last name
         roles: ['ROLE_SUPER_ADMIN']
+#        profile: '@user_profile_13'
