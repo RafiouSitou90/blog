@@ -57,6 +57,7 @@ class UsersTest extends KernelTestCase
             ->setProfile(null)
             ->setRoles(['ROLE_USER'])
             ->setPassword('user_password_not_hashed')
+            ->setIsVerified(true)
         ;
         $this->entityManager->persist($user);
 
@@ -79,6 +80,7 @@ class UsersTest extends KernelTestCase
         $this->assertEquals(null, $user->getProfile());
         $this->assertNotNull($user->getPassword());
         $this->assertInstanceOf(DateTime::class, $user->getCreatedAt());
+        $this->assertTrue($user->isVerified());
     }
 
     /**
