@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Post Updating{% endblock %}
+
+{% block body %}
+    <h1>Posts Updating</h1>
+
+    {{ include('posts/form/_form.html.twig', {'button_label': 'Update'}) }}
+
+    {% if post.medias %}
+        {% for media in post.medias %}
+            <img src="{{ vich_uploader_asset(media, 'mediaFile') }}" alt="{{ post.title }}">
+        {% endfor %}
+    {% endif %}
+
+{% endblock %}
+
+{% block javascripts %}
+    <script type="module" src="//unpkg.com/@grafikart/drop-files-element"></script>
+{% endblock %}

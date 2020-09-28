@@ -4,4 +4,8 @@
 
 {% block body %}
     <h1>Home</h1>
+
+    {% for i, post in posts %}
+        <li>{{ i + 1 }}: <a href="{{ path('app_home_show', {slug: post.slug}) }}">{{ post.title }}</a></li>
+    {% endfor %}
 {% endblock %}
