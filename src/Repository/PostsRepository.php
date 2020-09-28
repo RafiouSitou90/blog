@@ -3,7 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\Posts;
+use App\Entity\Tags;
+use App\Entity\Users;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,32 +23,110 @@ class PostsRepository extends ServiceEntityRepository
         parent::__construct($registry, Posts::class);
     }
 
-    // /**
-    //  * @return Posts[] Returns an array of Posts objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param Users $author
+     * @param Tags|null $tag
+     * @return Posts[]
+     */
+    public function findAllLatestForAuthor(Users $author, ?Tags $tag)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->addSelect(['tags', 'category', 'author', 'ratings', 'comments', 'medias'])
+            ->leftJoin('p.category', 'category')
+            ->leftJoin('p.medias', 'medias')
+            ->leftJoin('p.tags', 'tags')
+            ->leftJoin('p.author', 'author')
+            ->leftJoin('p.ratings', 'ratings')
+            ->leftJoin('p.comments', 'comments')
+            ->andWhere('p.author = :author')
+            ->orderBy('p.createdAt', 'DESC')
+            ->setParameter('author', $author)
+        ;
+
+        if ($tag !== null) {
+            $qb->andWhere(':tag MEMBER OF p.tags')->setParameter('tag', $tag);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param string $slug
+     * @param Users $author
+     * @return Posts|null
+     * @throws NonUniqueResultException
+     */
+    public function findOneBySlugForAuthor(string $slug, Users $author)
     {
         return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
+            ->addSelect(['tags', 'category', 'author', 'ratings', 'comments', 'medias'])
+            ->leftJoin('p.category', 'category')
+            ->leftJoin('p.medias', 'medias')
+            ->leftJoin('p.tags', 'tags')
+            ->leftJoin('p.author', 'author')
+            ->leftJoin('p.ratings', 'ratings')
+            ->leftJoin('p.comments', 'comments')
+            ->andWhere('p.slug = :slug')
+            ->andWhere('p.author = :author')
+            ->setParameters(['slug' => $slug, 'author' => $author])
+            ->getQuery()->getOneOrNullResult()
         ;
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Posts
+    /**
+     * @param Tags|null $tag
+     * @param int|null $limit
+     * @return Posts[]
+     */
+    public function findAllLatest(?Tags $tag = null, ?int $limit = null)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->addSelect('author', 'category')
+            ->innerJoin('p.author', 'author')
+            ->leftJoin('p.category', 'category')
+            ->where('p.publishedAt <= :now')
+            ->andWhere('p.state = :state')
+            ->orderBy('p.publishedAt', 'DESC')
+            ->setParameters([
+                'now' => new DateTime('now'),
+                'state' => Posts::getPublished()
+            ])
+        ;
+
+        if ($tag !== null) {
+            $qb->andWhere(':tag MEMBER OF p.tags')->setParameter('tag', $tag);
+        }
+
+        if ($limit !== null) {
+            $qb->setMaxResults($limit);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param string $slug
+     * @return Posts|null
+     * @throws NonUniqueResultException
+     */
+    public function findOneBySlug(string $slug): ?Posts
     {
         return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
+            ->addSelect('author', 'tags', 'comments', 'category', 'ratings', 'medias')
+            ->leftJoin('p.author', 'author')
+            ->leftJoin('p.category', 'category')
+            ->leftJoin('p.comments', 'comments')
+            ->leftJoin('p.tags', 'tags')
+            ->leftJoin('p.ratings', 'ratings')
+            ->leftJoin('p.medias', 'medias')
+            ->where('p.slug = :slug')
+            ->andWhere('p.state = :state')
+            ->setParameters([
+                'slug' => $slug,
+                'state' => Posts::getPublished()
+            ])
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
-    */
 }

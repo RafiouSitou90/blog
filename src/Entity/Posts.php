@@ -120,7 +120,7 @@ class Posts
     private ?DateTimeInterface $publishedAt = null;
 
     /**
-     * @ORM\OneToMany(targetEntity=PostMedias::class, mappedBy="post")
+     * @ORM\OneToMany(targetEntity=PostMedias::class, mappedBy="post", cascade={"persist", "remove"})
      * @var ArrayCollection|PostMedias[]
      */
     private $medias;

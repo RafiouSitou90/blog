@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ post.title }} &mdash; Posts{% endblock %}
+
+{% block body %}
+    <h1>Posts Show Page</h1>
+    <h3>Posts Show</h3>
+
+    <div><a href="{{ path('app_posts_edit', {slug: post.slug}) }}">Edit post</a></div>
+    <div>{{ include('posts/form/_delete_form.html.twig') }}</div>
+    {{ dump(post) }}
+
+    {{ include('posts/form/_status_form.html.twig', {form: updateStatusForm}) }}
+{% endblock %}

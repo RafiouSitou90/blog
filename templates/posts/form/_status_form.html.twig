@@ -1,0 +1,8 @@
+{{ form_start(form, {method: 'PUT', action: path('app_posts_change_status', {slug: post.slug})}) }}
+    {{ form_errors(form) }}
+    {{ form_widget(form) }}
+
+    <button type="submit">Change status</button>
+
+{{ form_end(form) }}
+
