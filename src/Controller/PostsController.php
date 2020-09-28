@@ -9,6 +9,7 @@ use App\Form\PostsChangeStatusFormType;
 use App\Form\PostsFormType;
 use App\Repository\PostsRepository;
 use App\Repository\TagsRepository;
+use App\Security\Voter\PostsVoter;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
@@ -160,11 +161,18 @@ class PostsController extends AbstractController
         /** @var Users $author */
         $author = $this->getUser();
 
+        /** @var Posts|null $post */
         $post = $this->postsRepository->findOneBySlugForAuthor($slug, $author);
 
         if (!$post) {
             throw new NotFoundHttpException('Post not found');
         }
+
+        $this->denyAccessUnlessGranted(
+            PostsVoter::SHOW,
+            $post,
+            'Access denied! Sorry you cannot show this post'
+        );
 
         $updateStatusForm = $this->createForm(PostsChangeStatusFormType::class, $post, ['method' => 'PUT']);
 
@@ -187,8 +195,18 @@ class PostsController extends AbstractController
         /** @var Users $author */
         $author = $this->getUser();
 
-        /** @var Posts $post */
+        /** @var Posts|null $post */
         $post = $this->postsRepository->findOneBySlugForAuthor($post->getSlug(), $author);
+
+        if (!$post) {
+            throw new NotFoundHttpException('Post not found');
+        }
+
+        $this->denyAccessUnlessGranted(
+            PostsVoter::EDIT,
+            $post,
+            'Access denied! Sorry you cannot show this post'
+        );
 
         $form = $this->createForm(PostsFormType::class, $post, ['method' => 'PUT']);
         $form->handleRequest($request);
@@ -228,9 +246,26 @@ class PostsController extends AbstractController
      * @param Request $request
      * @param Posts $post
      * @return RedirectResponse
+     * @throws NonUniqueResultException
      */
     public function changeStatus(Request $request, Posts $post): RedirectResponse
     {
+        /** @var Users $author */
+        $author = $this->getUser();
+
+        /** @var Posts|null $post */
+        $post = $this->postsRepository->findOneBySlugForAuthor($post->getSlug(), $author);
+
+        if (!$post) {
+            throw new NotFoundHttpException('Post not found');
+        }
+
+        $this->denyAccessUnlessGranted(
+            PostsVoter::DELETE,
+            $post,
+            'Access denied! Sorry you cannot show this post'
+        );
+
         $form = $this->createForm(PostsChangeStatusFormType::class, $post, ['method' => 'PUT']);
         $form->handleRequest($request);
 
@@ -259,6 +294,12 @@ class PostsController extends AbstractController
      */
     public function delete(Request $request, Posts $post): RedirectResponse
     {
+        $this->denyAccessUnlessGranted(
+            PostsVoter::SHOW,
+            $post,
+            'Access denied! Sorry you cannot show this post'
+        );
+
         if ($this->isCsrfTokenValid('delete_post_' . $post->getId(), $request->request->get('_token'))) {
             $this->entityManager->remove($post);
             $this->entityManager->flush();
