@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Posts;
 use App\Entity\Tags;
 use App\Entity\Users;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -69,6 +70,63 @@ class PostsRepository extends ServiceEntityRepository
             ->andWhere('p.author = :author')
             ->setParameters(['slug' => $slug, 'author' => $author])
             ->getQuery()->getOneOrNullResult()
+        ;
+    }
+
+    /**
+     * @param Tags|null $tag
+     * @param int|null $limit
+     * @return Posts[]
+     */
+    public function findAllLatest(?Tags $tag = null, ?int $limit = null)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->addSelect('author', 'category')
+            ->innerJoin('p.author', 'author')
+            ->leftJoin('p.category', 'category')
+            ->where('p.publishedAt <= :now')
+            ->andWhere('p.state = :state')
+            ->orderBy('p.publishedAt', 'DESC')
+            ->setParameters([
+                'now' => new DateTime('now'),
+                'state' => Posts::getPublished()
+            ])
+        ;
+
+        if ($tag !== null) {
+            $qb->andWhere(':tag MEMBER OF p.tags')->setParameter('tag', $tag);
+        }
+
+        if ($limit !== null) {
+            $qb->setMaxResults($limit);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param string $slug
+     * @return Posts|null
+     * @throws NonUniqueResultException
+     */
+    public function findOneBySlug(string $slug): ?Posts
+    {
+        return $this->createQueryBuilder('p')
+            ->addSelect('author', 'tags', 'comments', 'category', 'ratings', 'medias')
+            ->leftJoin('p.author', 'author')
+            ->leftJoin('p.category', 'category')
+            ->leftJoin('p.comments', 'comments')
+            ->leftJoin('p.tags', 'tags')
+            ->leftJoin('p.ratings', 'ratings')
+            ->leftJoin('p.medias', 'medias')
+            ->where('p.slug = :slug')
+            ->andWhere('p.state = :state')
+            ->setParameters([
+                'slug' => $slug,
+                'state' => Posts::getPublished()
+            ])
+            ->getQuery()
+            ->getOneOrNullResult()
         ;
     }
 }
