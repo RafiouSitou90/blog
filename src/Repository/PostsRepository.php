@@ -3,7 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Posts;
+use App\Entity\Tags;
+use App\Entity\Users;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,32 +22,53 @@ class PostsRepository extends ServiceEntityRepository
         parent::__construct($registry, Posts::class);
     }
 
-    // /**
-    //  * @return Posts[] Returns an array of Posts objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param Users $author
+     * @param Tags|null $tag
+     * @return Posts[]
+     */
+    public function findAllLatestForAuthor(Users $author, ?Tags $tag)
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
+        $qb = $this->createQueryBuilder('p')
+            ->addSelect(['tags', 'category', 'author', 'ratings', 'comments', 'medias'])
+            ->leftJoin('p.category', 'category')
+            ->leftJoin('p.medias', 'medias')
+            ->leftJoin('p.tags', 'tags')
+            ->leftJoin('p.author', 'author')
+            ->leftJoin('p.ratings', 'ratings')
+            ->leftJoin('p.comments', 'comments')
+            ->andWhere('p.author = :author')
+            ->orderBy('p.createdAt', 'DESC')
+            ->setParameter('author', $author)
         ;
-    }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Posts
+        if ($tag !== null) {
+            $qb->andWhere(':tag MEMBER OF p.tags')->setParameter('tag', $tag);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param string $slug
+     * @param Users $author
+     * @return Posts|null
+     * @throws NonUniqueResultException
+     */
+    public function findOneBySlugForAuthor(string $slug, Users $author)
     {
         return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
+            ->addSelect(['tags', 'category', 'author', 'ratings', 'comments', 'medias'])
+            ->leftJoin('p.category', 'category')
+            ->leftJoin('p.medias', 'medias')
+            ->leftJoin('p.tags', 'tags')
+            ->leftJoin('p.author', 'author')
+            ->leftJoin('p.ratings', 'ratings')
+            ->leftJoin('p.comments', 'comments')
+            ->andWhere('p.slug = :slug')
+            ->andWhere('p.author = :author')
+            ->setParameters(['slug' => $slug, 'author' => $author])
+            ->getQuery()->getOneOrNullResult()
         ;
     }
-    */
 }

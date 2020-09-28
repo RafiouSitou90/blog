@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Post creation{% endblock %}
+
+{% block body %}
+    <h1>Posts Creation</h1>
+
+    {{ include('posts/form/_form.html.twig') }}
+{% endblock %}
+
+{% block javascripts %}
+    <script type="module" src="//unpkg.com/@grafikart/drop-files-element"></script>
+{% endblock %}

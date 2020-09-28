@@ -26,3 +26,4 @@
 /phpcs.xml
 ###< squizlabs/php_codesniffer ###
 /web-coverage-test/
+/public/uploads/

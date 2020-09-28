@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Posts{% endblock %}
+
+{% block body %}
+    <h1>Posts</h1>
+    <p>
+        <a href="{{ path('app_posts_new') }}">Create a new post</a>
+    </p>
+
+    {% for i, post in posts %}
+        <li>{{ i + 1 }}: <a href="{{ path('app_posts_show', {slug: post.slug}) }}">{{ post.title }}</a></li>
+    {% endfor %}
+{% endblock %}
