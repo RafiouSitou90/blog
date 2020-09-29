@@ -1,0 +1,7 @@
+{{ form_start(form, {method: 'POST', action: path('app_comments_new', {'postSlug': post.slug})}) }}
+    <div class="form-group">
+        {{ form_widget(form.content) }}
+    </div>
+
+    <button type="submit">Publish</button>
+{{ form_end(form) }}

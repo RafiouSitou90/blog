@@ -119,8 +119,9 @@ class PostsRepository extends ServiceEntityRepository
             ->leftJoin('p.tags', 'tags')
             ->leftJoin('p.ratings', 'ratings')
             ->leftJoin('p.medias', 'medias')
-            ->where('p.slug = :slug')
+            ->andWhere('p.slug = :slug')
             ->andWhere('p.state = :state')
+            ->orderBy('comments.createdAt', 'DESC')
             ->setParameters([
                 'slug' => $slug,
                 'state' => Posts::getPublished()
