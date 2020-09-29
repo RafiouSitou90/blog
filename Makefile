@@ -1,6 +1,12 @@
 s := symfony
 sc := symfony console
 
+## Make cache
+cache:
+	$(sc) cache:clear
+	$(sc) cache:warmup
+.PHONY: cache
+
 ## Make entity
 entity:
 	$(sc) make:entity

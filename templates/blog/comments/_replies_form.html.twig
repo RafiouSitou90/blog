@@ -1,0 +1,8 @@
+{{ form_start(form, {method: 'POST', action: path('app_comments_replies_new', {'id': comment.id})}) }}
+
+    <div><h3>Add response</h3></div>
+        {{ form_errors(form) }}
+        {{ form_widget(form) }}
+
+    <button class="btn" type="submit">Answer</button>
+{{ form_end(form) }}

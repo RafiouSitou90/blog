@@ -6,4 +6,44 @@
     <h1>{{ post.title }}</h1>
 
     {{ dump(post) }}
+
+    <h4>Post Comment</h4>
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        {{ render(controller('App\\Controller\\PostsCommentsController::createPostsCommentForm', {'id': post.id})) }}
+    {% else %}
+        <p>
+            <a href="{{ path('app_security_login', {'redirect_to': app.request.pathInfo}) }}">
+                <i class="fa fa-sign-in" aria-hidden="true"></i> &nbsp;Login to publish
+            </a>
+            a new comment
+        </p>
+    {% endif %}
+
+    {% if post.comments.count > 0 %}
+        <h5>{{ post.comments.count }} Comments</h5>
+        <div>
+            {% for i, comment in post.comments %}
+                {% if comment.parentComment == null %}
+                    <li>Comment : <em>{{ comment.content }}</em> {{ comment.createdAt | date('Y-m-d H:i') }}</li>
+
+                    <div style="margin-left: 20px;">
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                            {{
+                            render(controller('App\\Controller\\PostsCommentsController::createPostsCommentsRepliesForm',
+                                {'id': comment.id}))
+                            }}
+                        {% endif %}
+                    </div>
+                {% endif %}
+
+                {% if comment.replies.count > 0 %}
+                    {% for j, reply in comment.replies %}
+                        <ol style="margin-left: 20px;">Reply n°{{ j + 1 }}: <em>{{ reply.content }}</em> {{ reply.createdAt | date('Y-m-d H:i') }}</ol>
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% else %}
+        <h5>There are no comments posted</h5>
+    {% endif %}
 {% endblock %}
