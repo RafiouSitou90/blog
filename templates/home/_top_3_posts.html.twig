@@ -11,7 +11,7 @@
     </div>
     <div class="top-post-details">
         <ul class="tags">
-            {% for tag in post_1.tags | slice(0, 1) %}
+            {% for tag in post_1.tags | slice(0, 5) %}
                 <li>
                     <a href="{{ path('app_home_index',
                         {'tag': tag.name == app.request.query.get('tag') ? null : tag.name}) }}"

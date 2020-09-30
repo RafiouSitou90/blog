@@ -8,6 +8,7 @@ import 'bootstrap/dist/js/bootstrap.min'
 import './modules/easing.min'
 import './modules/hoverIntent'
 import './modules/superfish.min'
+import './modules/jquery.ajaxchimp.min'
 
 import 'magnific-popup/dist/jquery.magnific-popup.min'
 
