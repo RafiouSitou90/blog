@@ -1,0 +1,114 @@
+{% set  post_1 = posts[0] %}
+{% set  post_2 = posts[1] %}
+<div class="col-lg-8 top-post-left">
+    <div class="feature-image-thumb relative">
+        <div class="overlay overlay-bg"></div>
+        <img
+            class="img-fluid"
+            src="{{ vich_uploader_asset(post_1.medias[0], 'mediaFile') }}"
+            alt="{{ post_1.title }}"
+        >
+    </div>
+    <div class="top-post-details">
+        <ul class="tags">
+            {% for tag in post_1.tags | slice(0, 1) %}
+                <li>
+                    <a href="{{ path('app_home_index',
+                        {'tag': tag.name == app.request.query.get('tag') ? null : tag.name}) }}"
+                    >
+                        {{ tag.name }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+        <a href="{{ path('app_home_show', {slug: post_1.slug}) }}">
+            <h3>{{ post_1.title }}</h3>
+        </a>
+        <ul class="meta">
+            <li><a href="#"><span class="lnr lnr-user"></span>{{ post_1.author.fullName }}</a></li>
+            <li>
+                <a href="#">
+                    <span class="lnr lnr-calendar-full"></span>
+                    {{ post_1.publishedAt | date('d M, Y') }}
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span class="lnr lnr-bubble"></span>
+                    {% if post_1.comments.count <= 9 %}
+                        0{{ post_1.comments.count }} Comments
+                    {% else %}
+                        {{ post_1.comments.count }} Comments
+                    {% endif %}
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="col-lg-4 top-post-right">
+    <div class="single-top-post">
+        <div class="feature-image-thumb relative">
+            <div class="overlay overlay-bg"></div>
+            {% if post_2.medias is not empty %}
+                <img
+                    class="img-fluid"
+                    src="{{ vich_uploader_asset(post_2.medias[0], 'mediaFile') }}"
+                    alt="{{ post_2.title }}"
+                >
+            {% else %}
+                <img
+                    class="img-fluid"
+                    src="{{ asset('build/img/default-post-image.jpg') }}"
+                    alt="{{ post_2.title }}"
+                >
+            {% endif %}
+        </div>
+        <div class="top-post-details">
+            <ul class="tags">
+                <li><a href="#">Food Habit</a></li>
+            </ul>
+            <a href="{{ path('app_home_show', {slug: post_1.slug}) }}">
+                <h4>{{ post_2.title }}</h4>
+            </a>
+            <ul class="meta">
+                <li><a href="#"><span class="lnr lnr-user"></span>{{ post_2.author.fullName }}</a></li>
+                <li>
+                    <a href="#">
+                        <span class="lnr lnr-calendar-full"></span>
+                        {{ post_2.publishedAt | date('d M, Y') }}
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="lnr lnr-bubble"></span>
+                        {% if post_2.comments.count <= 9 %}
+                            0{{ post_2.comments.count }} Comments
+                        {% else %}
+                            {{ post_2.comments.count }} Comments
+                        {% endif %}
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="single-top-post mt-10">
+        <div class="feature-image-thumb relative">
+            <div class="overlay overlay-bg"></div>
+            <img class="img-fluid" src="{{ asset('build/img/default-post-image.jpg') }}" alt="">
+        </div>
+        <div class="top-post-details">
+            <ul class="tags">
+                <li><a href="#">Food Habit</a></li>
+            </ul>
+            <a href="#">
+                <h4>A Discount Toner Cartridge Is Better</h4>
+            </a>
+            <ul class="meta">
+                <li><a href="#"><span class="lnr lnr-user"></span>Mark wiens</a></li>
+                <li><a href="#"><span class="lnr lnr-calendar-full"></span>03 April, 2018</a></li>
+                <li><a href="#"><span class="lnr lnr-bubble"></span>06 Comments</a></li>
+            </ul>
+        </div>
+    </div>
+</div>

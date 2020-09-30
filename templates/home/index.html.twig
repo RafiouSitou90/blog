@@ -3,9 +3,14 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
-    <h1>Home</h1>
+    <section class="top-post-area pt-10">
+        <div class="container no-padding">
+            <div class="row small-gutters">
+                {% include 'home/_top_3_posts.html.twig' with {posts: posts} %}
 
-    {% for i, post in posts %}
-        <li>{{ i + 1 }}: <a href="{{ path('app_home_show', {slug: post.slug}) }}">{{ post.title }}</a></li>
-    {% endfor %}
+                {% include 'home/_breaking_news.html.twig' %}
+            </div>
+        </div>
+    </section>
+
 {% endblock %}
