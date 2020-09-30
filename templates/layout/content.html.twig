@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <section class="top-post-area pt-10">
+        <div class="container no-padding">
+            <div class="row small-gutters">
+                {% block header %}{% endblock %}
+
+                <section class="latest-post-area pb-120">
+                    <div class="container no-padding">
+                        <div class="row">
+                            <div class="col-lg-8 post-list">
+                                {% block left_content %}{% endblock %}
+                            </div>
+                            <div class="col-lg-4">
+                                {% block right_content %}{% endblock %}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </section>
+{% endblock %}

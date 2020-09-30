@@ -1,11 +1,122 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout/content.html.twig' %}
 
 {% block title %}Home{% endblock %}
 
-{% block body %}
-    <h1>Home</h1>
+{% block header %}
+    {% include 'home/_top_3_posts.html.twig' with {posts: posts} %}
 
-    {% for i, post in posts %}
-        <li>{{ i + 1 }}: <a href="{{ path('app_home_show', {slug: post.slug}) }}">{{ post.title }}</a></li>
-    {% endfor %}
+    {% include 'home/_breaking_news.html.twig' %}
 {% endblock %}
+
+{% block left_content %}
+    <!-- Start latest-post Area -->
+    <div class="latest-post-wrap">
+        <h4 class="cat-title">Latest News</h4>
+        <div class="single-latest-post row align-items-center">
+            <div class="col-lg-5 post-left">
+                <div class="feature-img relative">
+                    <div class="overlay overlay-bg"></div>
+                    <img class="img-fluid" src="{{ asset('build/img/default-post-image.jpg') }}" alt="">
+                </div>
+                <ul class="tags">
+                    <li><a href="#">Lifestyle</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-7 post-right">
+                <a href="image-post.html">
+                    <h4>A Discount Toner Cartridge Is
+                        Better Than Ever.</h4>
+                </a>
+                <ul class="meta">
+                    <li><a href="#"><span class="lnr lnr-user"></span>Mark wiens</a></li>
+                    <li><a href="#"><span class="lnr lnr-calendar-full"></span>03 April, 2018</a></li>
+                    <li><a href="#"><span class="lnr lnr-bubble"></span>06 Comments</a></li>
+                </ul>
+                <p class="excert">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.
+                </p>
+            </div>
+        </div>
+        <div class="single-latest-post row align-items-center">
+            <div class="col-lg-5 post-left">
+                <div class="feature-img relative">
+                    <div class="overlay overlay-bg"></div>
+                    <img class="img-fluid" src="{{ asset('build/img/default-post-image.jpg') }}" alt="">
+                </div>
+                <ul class="tags">
+                    <li><a href="#">Science</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-7 post-right">
+                <a href="image-post.html">
+                    <h4>A Discount Toner Cartridge Is
+                        Better Than Ever.</h4>
+                </a>
+                <ul class="meta">
+                    <li><a href="#"><span class="lnr lnr-user"></span>Mark wiens</a></li>
+                    <li><a href="#"><span class="lnr lnr-calendar-full"></span>03 April, 2018</a></li>
+                    <li><a href="#"><span class="lnr lnr-bubble"></span>06 Comments</a></li>
+                </ul>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.
+                </p>
+            </div>
+        </div>
+        <div class="single-latest-post row align-items-center">
+            <div class="col-lg-5 post-left">
+                <div class="feature-img relative">
+                    <div class="overlay overlay-bg"></div>
+                    <img class="img-fluid" src="{{ asset('build/img/default-post-image.jpg') }}" alt="">
+                </div>
+                <ul class="tags">
+                    <li><a href="#">Travel</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-7 post-right">
+                <a href="image-post.html">
+                    <h4>A Discount Toner Cartridge Is
+                        Better Than Ever.</h4>
+                </a>
+                <ul class="meta">
+                    <li><a href="#"><span class="lnr lnr-user"></span>Mark wiens</a></li>
+                    <li><a href="#"><span class="lnr lnr-calendar-full"></span>03 April, 2018</a></li>
+                    <li><a href="#"><span class="lnr lnr-bubble"></span>06 Comments</a></li>
+                </ul>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.
+                </p>
+            </div>
+        </div>
+        <div class="single-latest-post row align-items-center">
+            <div class="col-lg-5 post-left">
+                <div class="feature-img relative">
+                    <div class="overlay overlay-bg"></div>
+                    <img class="img-fluid" src="{{ asset('build/img/default-post-image.jpg') }}" alt="">
+                </div>
+                <ul class="tags">
+                    <li><a href="#">Fashion</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-7 post-right">
+                <a href="image-post.html">
+                    <h4>A Discount Toner Cartridge Is
+                        Better Than Ever.</h4>
+                </a>
+                <ul class="meta">
+                    <li><a href="#"><span class="lnr lnr-user"></span>Mark wiens</a></li>
+                    <li><a href="#"><span class="lnr lnr-calendar-full"></span>03 April, 2018</a></li>
+                    <li><a href="#"><span class="lnr lnr-bubble"></span>06 Comments</a></li>
+                </ul>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- End latest-post Area -->
+{% endblock %}
+
+{% block right_content %}
+    {% include 'navigations/right/index.html.twig' %}
+{% endblock %}
+

@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+@import "~linearicons/dist/web-font/style.css";
+
+@import "~@fortawesome/fontawesome-free/css/all.css";
+@import "~@fortawesome/fontawesome-free/css/v4-shims.css";
+
+@import "~bootstrap/dist/css/bootstrap.min.css";
+
+@import "~magnific-popup/dist/magnific-popup.css";
+
+// Nice select under this line
+
+@import "~animate.css/animate.min.css";
+
+@import "~owl.carousel/dist/assets/owl.carousel.min.css";
+
+@import "~jquery-ui/themes/base/all.css";
+
+// Bootstrap
+
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+
+//
+// Grid mixins
+//
+@import "~bootstrap/scss/mixins/breakpoints";
+
+// including variables and mixins
+@import "theme/variables";
+@import "theme/mixins";
+@import "theme/flexbox";
+@import "theme/reset";
+
+
+// Custom Scss
+@import "theme/elements";
+@import "theme/header";
+@import "theme/home";
+@import "theme/sidebar";
+@import "theme/archive";
+@import "theme/about";
+@import "theme/post-type";
+@import "theme/contact";
+@import "theme/footer";

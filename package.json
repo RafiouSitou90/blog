@@ -1,0 +1,28 @@
+{
+    "devDependencies": {
+        "@fortawesome/fontawesome-free": "^5.15.0",
+        "@symfony/webpack-encore": "^0.30.0",
+        "animate.css": "^4.1.1",
+        "bootstrap": "^4.5.2",
+        "core-js": "^3.0.0",
+        "jquery": "^3.5.1",
+        "jquery-ui": "^1.12.1",
+        "lato-font": "^3.0.0",
+        "linearicons": "^1.0.2",
+        "magnific-popup": "^1.1.0",
+        "node-sass": "^4.14.1",
+        "owl.carousel": "^2.3.4",
+        "popper.js": "^1.16.1",
+        "regenerator-runtime": "^0.13.2",
+        "sass-loader": "^8.0.0",
+        "webpack-notifier": "^1.6.0"
+    },
+    "license": "UNLICENSED",
+    "private": true,
+    "scripts": {
+        "dev-server": "encore dev-server",
+        "dev": "encore dev",
+        "watch": "encore dev --watch",
+        "build": "encore production --progress"
+    }
+}
