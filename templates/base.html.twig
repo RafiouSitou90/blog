@@ -11,7 +11,14 @@
 
     </head>
     <body>
-        {% block body %}{% endblock %}
+        {{ include('navigations/header/index.html.twig') }}
+
+        <div class="site-main-container">
+            {% block body %}{% endblock %}
+        </div>
+
+        {{ include('navigations/footer/index.html.twig') }}
+
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
         {% endblock %}

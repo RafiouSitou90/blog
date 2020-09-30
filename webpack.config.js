@@ -73,7 +73,7 @@ Encore
     })
 
     .copyFiles({
-        from: './assets/images',
+        from: './assets/img',
         to: '[path][name].[hash:8].[ext]',
         context: './assets'
     })
