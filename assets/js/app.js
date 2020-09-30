@@ -1,14 +1,21 @@
-/*
- * Welcome to your app's main JavaScript file!
- *
- * We recommend including the built version of this JavaScript file
- * (and its CSS file) in your base layout (base.html.twig).
- */
+import '../scss/app.scss';
 
-// any CSS you import will output into a single css file (app.css in this case)
-import '../css/app.css';
+import $ from 'jquery'
+import './modules/jquery-2.2.4.min'
+import 'popper.js'
+import 'bootstrap/dist/js/bootstrap.min'
 
-// Need jQuery? Install it with "yarn add jquery", then uncomment to import it.
-// import $ from 'jquery';
+import './modules/easing.min'
+import './modules/hoverIntent'
+import './modules/superfish.min'
+
+import 'magnific-popup/dist/jquery.magnific-popup.min'
+
+import './modules/mn-accordion'
+import './modules/jquery-ui'
+import './modules/jquery.nice-select.min'
+import 'owl.carousel/dist/owl.carousel'
+
+import './modules/main'
 
 console.log('Hello Webpack Encore! Edit me in assets/js/app.js');
