@@ -15,7 +15,7 @@ import 'magnific-popup/dist/jquery.magnific-popup.min'
 import './modules/mn-accordion'
 import './modules/jquery-ui'
 import './modules/jquery.nice-select.min'
-import 'owl.carousel/dist/owl.carousel'
+import 'owl.carousel/dist/owl.carousel.min'
 
 import './modules/main'
 
