@@ -5,13 +5,13 @@
 {% block header %}
     <div class="col-lg-12">
         <div class="hero-nav-area">
-            <h1 class="text-white">Posts detail</h1>
+            <h1 class="text-white">Blog detail</h1>
             <p class="text-white link-nav">
                 <a href="{{ path('app_home_index') }}">Home</a>
                 <span class="lnr lnr-arrow-right"></span>
                 <a href="{{ path('app_home_index') }}">Posts</a>
                 <span class="lnr lnr-arrow-right"></span>
-                <a href="{{ path('app_home_show', {slug: post.slug}) }}">{{ post.title }}</a>
+                <a href="{{ path('app_blog_show', {slug: post.slug}) }}">{{ post.title }}</a>
             </p>
         </div>
     </div>
