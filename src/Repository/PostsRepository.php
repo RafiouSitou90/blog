@@ -130,4 +130,19 @@ class PostsRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
+
+    /**
+     * @param string|null $word
+     * @return int|mixed|string
+     */
+    public function search(string $word = null)
+    {
+        $query = $this->createQueryBuilder('p');
+        $query->where('p.state = published');
+        if ($word != null) {
+            $query->andWhere('MATCH_AGAINST(p.title, p.summary, p.content) AGAINST (:words boolean) > 0')
+                ->setParameter('words', $word);
+        }
+        return $query->getQuery()->getResult();
+    }
 }
