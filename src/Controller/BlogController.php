@@ -14,11 +14,11 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class HomeController
+ * Class BlogController
  * @package App\Controller
- * @Route(name="app_home_")
+ * @Route("/blog", name="app_blog_")
  */
-class HomeController extends AbstractController
+class BlogController extends AbstractController
 {
     /**
      * @var PaginatorInterface
@@ -50,14 +50,46 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/", name="index", methods={"GET"})
+     * @Route("", name="index", methods={"GET"})
+     * @param Request $request
      * @return Response
      */
-    public function index(): Response
+    public function index(Request $request)
     {
-        return $this->render('home/index.html.twig', [
-            'posts' => $this->postsRepository->findAllLatest(null, 3),
+        $tag = null;
+        if ($request->query->has('tag')) {
+            $tag = $this->tagsRepository->findOneBy(['name' => $request->query->get('tag')]);
+        }
+
+        $allPublished = $this->paginator->paginate(
+            $this->postsRepository->findAllLatest($tag),
+            $request->query->getInt('page', 1),
+            10
+        );
+
+        return $this->render('blog/index.html.twig', [
+            'allPublished' => $allPublished,
         ]);
     }
 
+    /**
+     * @Route("/{slug}", name="show", methods={"GET"})
+     *
+     * @param string $slug
+     * @return Response
+     * @throws NonUniqueResultException
+     */
+    public function show(string $slug): Response
+    {
+        /** @var Posts|null $post */
+        $post = $this->postsRepository->findOneBySlug($slug);
+
+        if (!$post) {
+            throw new NotFoundHttpException('Post not found');
+        }
+
+        return $this->render('blog/show/index.html.twig', [
+            'post' => $post,
+        ]);
+    }
 }
