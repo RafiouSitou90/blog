@@ -132,17 +132,23 @@ class PostsRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param string|null $word
-     * @return int|mixed|string
+     * @param string|null $words
+     * @return array|int|mixed|string|Posts[]
      */
-    public function search(string $word = null)
+    public function search(string $words = null)
     {
-        $query = $this->createQueryBuilder('p');
-        $query->where('p.state = published');
-        if ($word != null) {
-            $query->andWhere('MATCH_AGAINST(p.title, p.summary, p.content) AGAINST (:words boolean) > 0')
-                ->setParameter('words', $word);
+        if ($words != null) {
+            $query = $this->createQueryBuilder('p');
+            $query
+                ->where("p.state = 'published'")
+//                ->where('p.state = :published')
+                ->andWhere('MATCH_AGAINST(p.title, p.summary, p.content) AGAINST (:words boolean) > 0')
+                ->setParameter('words', $words)
+//                ->setParameters(['words' => $words, 'published' => 'published'])
+            ;
+            return $query->getQuery()->getResult();
+        } else {
+            return [];
         }
-        return $query->getQuery()->getResult();
     }
 }

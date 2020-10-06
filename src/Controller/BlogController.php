@@ -8,6 +8,7 @@ use App\Repository\TagsRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -91,5 +92,24 @@ class BlogController extends AbstractController
         return $this->render('blog/show/index.html.twig', [
             'post' => $post,
         ]);
+    }
+
+    /**
+     * @Route("/search", name="search", methods={"POST"})
+     * @param Request $request
+     * @return Response|RedirectResponse
+     */
+    public function handleSearch(Request $request)
+    {
+        $words = $request->get('post_search');
+
+        if ($words == null || $words == "") {
+            return $this->redirectToRoute($request->get('_route'));
+        } else {
+            return $this->render('blog/search/index.html.twig', [
+                'words' => $words,
+                'results' => $this->postsRepository->search($words)
+            ]);
+        }
     }
 }
