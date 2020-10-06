@@ -36,3 +36,8 @@ schema-test:
 coverage-test:
 	php bin/phpunit --coverage-html web-coverage-test/test-coverage
 .PHONY: coverage-test
+
+## Run all tests coverage
+server:
+	$(s) serve --no-tls
+.PHONY: server

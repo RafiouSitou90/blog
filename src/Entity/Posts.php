@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=PostsRepository::class)
- * @ORM\Table(name="tab_posts")
+ * @ORM\Table(name="tab_posts", indexes={@ORM\Index(columns={"title", "summary", "content"}, flags={"fulltext"})})
  * @UniqueEntity(fields={"slug"}, message="There is already post with this slug")
  * @ORM\HasLifecycleCallbacks()
  */

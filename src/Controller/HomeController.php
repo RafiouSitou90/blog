@@ -51,45 +51,13 @@ class HomeController extends AbstractController
 
     /**
      * @Route("/", name="index", methods={"GET"})
-     * @param Request $request
      * @return Response
      */
-    public function index(Request $request): Response
+    public function index(): Response
     {
-        $tag = null;
-        if ($request->query->has('tag')) {
-            $tag = $this->tagsRepository->findOneBy(['name' => $request->query->get('tag')]);
-        }
-
-        $latestPosts = $this->paginator->paginate(
-            $this->postsRepository->findAllLatest($tag),
-            $request->query->getInt('page', 1),
-            10
-        );
-
         return $this->render('home/index.html.twig', [
-            'posts' => $latestPosts,
+            'posts' => $this->postsRepository->findAllLatest(null, 3),
         ]);
     }
 
-    /**
-     * @Route("/show/{slug}", name="show", methods={"GET"})
-     *
-     * @param string $slug
-     * @return Response
-     * @throws NonUniqueResultException
-     */
-    public function show(string $slug): Response
-    {
-        /** @var Posts|null $post */
-        $post = $this->postsRepository->findOneBySlug($slug);
-
-        if (!$post) {
-            throw new NotFoundHttpException('Post not found');
-        }
-
-        return $this->render('blog/show/index.html.twig', [
-            'post' => $post,
-        ]);
-    }
 }
