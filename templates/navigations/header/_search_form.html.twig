@@ -1,0 +1,17 @@
+<form class="Search" action="{{ path('app_blog_search') }}" method="post">
+    <input
+        type="text"
+        class="form-control Search-box"
+        name="post_search"
+        id="Search-box"
+        placeholder="Search"
+        required
+        minlength="3"
+    >
+    <label for="Search-box" class="Search-box-label">
+        <span class="lnr lnr-magnifier"></span>
+    </label>
+    <span class="Search-close">
+        <span class="lnr lnr-cross"></span>
+    </span>
+</form>
